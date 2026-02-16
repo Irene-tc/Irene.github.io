@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新春祝福</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Serif SC', 'SimSun', '宋体', serif;
+            overflow-x: hidden;
+        }
+        
+        .gold-text {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .gold-bg {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-slow {
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .lantern-swing {
+            animation: swing 4s ease-in-out infinite;
+            transform-origin: top center;
+        }
+        
+        @keyframes swing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        .blessing-enter {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .character-pop {
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            opacity: 0;
+        }
+        
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .sequin {
+            position: absolute;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to bottom, #FFD700, #FFA500, #FFD700);
+            border-radius: 2px;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        .option-btn {
+            transition: all 0.3s ease;
+            background: rgba(139, 0, 0, 0.8);
+            border: 2px solid #FFD700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            background: rgba(178, 34, 34, 0.9);
+        }
+        
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 215, 0, 0.3) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        
+        .option-btn:hover::before {
+            animation: shimmer 0.6s ease-in-out;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+        
+        .pattern-bg {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(139, 0, 0, 0.3) 0%, transparent 50%);
+        }
+        
+        .cloud-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20,50 Q30,30 50,30 T80,50 T100,50' fill='none' stroke='rgba(255,215,0,0.1)' stroke-width='2'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-red-900 via-red-800 to-red-950 min-h-screen relative overflow-hidden pattern-bg">
+
+    <!-- 金色亮片容器 -->
+    <div id="sequins-container" class="fixed inset-0 pointer-events-none z-10"></div>
+
+    <!-- 背景装饰 -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <!-- 左上角中国结 -->
+        <div class="absolute -top-10 -left-10 w-48 h-48 floating-slow opacity-80">
+            <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-2xl">
+                <defs>
+                    <linearGradient id="knotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <!-- 中国结主体 -->
+                <path d="M100,20 L100,60 M60,40 Q100,80 140,40 M40,60 Q100,100 160,60 M60,80 Q100,120 140,80" 
+                      stroke="url(#knotGrad)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <circle cx="100" cy="100" r="25" fill="none" stroke="#DC2626" stroke-width="6"/>
+                <path d="M100,125 L100,180 M80,140 Q100,160 120,140 M70,160 Q100,180 130,160" 
+                      stroke="#DC2626" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <circle cx="85" cy="175" r="8" fill="#FFD700"/>
+                <circle cx="115" cy="175" r="8" fill="#FFD700"/>
+            </svg>
+        </div>
+
+        <!-- 右上角灯笼 -->
+        <div class="absolute -top-5 right-10 w-32 h-40 lantern-swing">
+            <svg viewBox="0 0 100 140" class="w-full h-full drop-shadow-2xl">
+                <rect x="45" y="0" width="10" height="20" fill="#8B4513"/>
+                <ellipse cx="50" cy="70" rx="35" ry="45" fill="#DC2626" stroke="#FFD700" stroke-width="3"/>
+                <line x1="20" y1="50" x2="80" y2="50" stroke="#FFD700" stroke-width="2"/>
+                <line x1="15" y1="70" x2="85" y2="70" stroke="#FFD700" stroke-width="2"/>
+                <line x1="20" y1="90" x2="80" y2="90" stroke="#FFD700" stroke-width="2"/>
+                <rect x="40" y="115" width="20" height="10" fill="#8B4513"/>
+                <path d="M30,125 Q50,145 70,125" fill="#FFD700" opacity="0.8"/>
+                <path d="M35,130 L35,140 M50,135 L50,145 M65,130 L65,140" stroke="#FFD700" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <!-- 左下角金元宝 -->
+        <div class="absolute bottom-20 left-10 w-36 h-24 floating opacity-90">
+            <svg viewBox="0 0 150 100" class="w-full h-full drop-shadow-2xl">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FFE55C;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#FFD700;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <ellipse cx="75" cy="50" rx="60" ry="35" fill="url(#goldGrad)" stroke="#B8860B" stroke-width="2"/>
+                <ellipse cx="75" cy="45" rx="50" ry="25" fill="#FFE55C" opacity="0.6"/>
+                <text x="75" y="55" text-anchor="middle" fill="#B8860B" font-size="24" font-weight="bold" font-family="serif">福</text>
+            </svg>
+        </div>
+
+        <!-- 右下角红包 -->
+        <div class="absolute bottom-32 right-5 w-28 h-36 floating-slow opacity-90">
+            <svg viewBox="0 0 100 130" class="w-full h-full drop-shadow-2xl">
+                <rect x="10" y="20" width="80" height="100" rx="5" fill="#DC2626" stroke="#8B0000" stroke-width="2"/>
+                <path d="M10,20 L50,60 L90,20" fill="#B91C1C"/>
+                <circle cx="50" cy="45" r="12" fill="#FFD700"/>
+                <text x="50" y="50" text-anchor="middle" fill="#DC2626" font-size="16" font-weight="bold">福</text>
+                <rect x="35" y="75" width="30" height="40" fill="none" stroke="#FFD700" stroke-width="2" rx="3"/>
+            </svg>
+        </div>
+
+        <!-- 彩灯串 -->
+        <div class="absolute top-1/4 left-0 w-full h-20 pointer-events-none">
+            <svg viewBox="0 0 1200 100" class="w-full h-full opacity-60" preserveAspectRatio="none">
+                <path d="M0,50 Q300,0 600,50 T1200,50" fill="none" stroke="#FFD700" stroke-width="2" stroke-dasharray="5,5"/>
+                <circle cx="200" cy="35" r="8" fill="#FF6B6B" class="animate-pulse"/>
+                <circle cx="400" cy="20" r="8" fill="#FFD93D" class="animate-pulse" style="animation-delay: 0.5s"/>
+                <circle cx="600" cy="50" r="8" fill="#FF6B6B" class="animate-pulse" style="animation-delay: 1s"/>
+                <circle cx="800" cy="20" r="8" fill="#FFD93D" class="animate-pulse" style="animation-delay: 1.5s"/>
+                <circle cx="1000" cy="35" r="8" fill="#FF6B6B" class="animate-pulse" style="animation-delay: 2s"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="relative z-20 min-h-screen flex flex-col items-center justify-center px-4 py-12">
+        
+        <!-- 标题 -->
+        <div class="text-center mb-12 floating">
+            <h1 class="text-5xl md:text-7xl font-black gold-text mb-4 tracking-widest" style="text-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                新春纳福
+            </h1>
+            <div class="w-32 h-1 gold-bg mx-auto rounded-full"></div>
+            <p class="text-yellow-200 mt-4 text-lg tracking-widest opacity-80">点击选择您的新年祝愿</p>
+        </div>
+
+        <!-- 选项按钮区 -->
+        <div id="options-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl w-full mb-12">
+            <button onclick="showBlessing(0)" class="option-btn rounded-2xl p-8 text-center group cursor-pointer">
+                <div class="text-6xl mb-4 transform group-hover:scale-110 transition-transform">🌊</div>
+                <h3 class="text-2xl font-bold text-yellow-400 mb-2">福如东海</h3>
+                <p class="text-red-200 text-sm">健康长寿 · 福寿双全</p>
+            </button>
+
+            <button onclick="showBlessing(1)" class="option-btn rounded-2xl p-8 text-center group cursor-pointer">
+                <div class="text-6xl mb-4 transform group-hover:scale-110 transition-transform">📚</div>
+                <h3 class="text-2xl font-bold text-yellow-400 mb-2">前程似锦</h3>
+                <p class="text-red-200 text-sm">学业进步 · 鹏程万里</p>
+            </button>
+
+            <button onclick="showBlessing(2)" class="option-btn rounded-2xl p-8 text-center group cursor-pointer">
+                <div class="text-6xl mb-4 transform group-hover:scale-110 transition-transform">💼</div>
+                <h3 class="text-2xl font-bold text-yellow-400 mb-2">事业有成</h3>
+                <p class="text-red-200 text-sm">工作顺利 · 财源广进</p>
+            </button>
+        </div>
+
+        <!-- 祝福展示区域 -->
+        <div id="blessing-display" class="hidden max-w-4xl w-full text-center">
+            <div class="bg-gradient-to-br from-red-950/90 via-red-900/90 to-red-950/90 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-2 border-yellow-600/50 shadow-2xl relative overflow-hidden">
+                <!-- 装饰角花 -->
+                <div class="absolute top-4 left-4 w-16 h-16 border-t-4 border-l-4 border-yellow-600 rounded-tl-2xl"></div>
+                <div class="absolute top-4 right-4 w-16 h-16 border-t-4 border-r-4 border-yellow-600 rounded-tr-2xl"></div>
+                <div class="absolute bottom-4 left-4 w-16 h-16 border-b-4 border-l-4 border-yellow-600 rounded-bl-2xl"></div>
+                <div class="absolute bottom-4 right-4 w-16 h-16 border-b-4 border-r-4 border-yellow-600 rounded-br-2xl"></div>
+
+                <div id="blessing-content" class="relative z-10">
+                    <!-- 动态插入祝福内容 -->
+                </div>
+
+                <button onclick="resetView()" class="mt-8 px-8 py-3 bg-yellow-600 hover:bg-yellow-500 text-red-900 font-bold rounded-full transition-all transform hover:scale-105 shadow-lg border-2 border-yellow-400">
+                    返回选择
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 祝福语数据
+        const blessings = [
+            {
+                title: "福如东海",
+                content: ["福如东海", "寿比南山", "松鹤延年", "天伦永享", "笑口常开"],
+                icon: "🌊"
+            },
+            {
+                title: "前程似锦",
+                content: ["前程似锦", "学业有成", "马到成功", "金榜题名", "友谊长存"],
+                icon: "📚"
+            },
+            {
+                title: "事业有成",
+                content: ["事业有成", "阖家幸福", "财源广进", "步步高升", "万事顺遂"],
+                icon: "💼"
+            }
+        ];
+
+        // 创建金色亮片
+        function createSequins() {
+            const container = document.getElementById('sequins-container');
+            const sequinCount = 50;
+            
+            for (let i = 0; i < sequinCount; i++) {
+                const sequin = document.createElement('div');
+                sequin.className = 'sequin';
+                sequin.style.left = Math.random() * 100 + '%';
+                sequin.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                sequin.style.animationDelay = Math.random() * 5 + 's';
+                sequin.style.opacity = Math.random() * 0.5 + 0.3;
+                container.appendChild(sequin);
+            }
+        }
+
+        // 显示祝福
+        function showBlessing(index) {
+            const data = blessings[index];
+            const display = document.getElementById('blessing-display');
+            const content = document.getElementById('blessing-content');
+            const options = document.getElementById('options-container');
+            
+            // 隐藏选项
+            options.style.display = 'none';
+            
+            // 生成祝福HTML
+            let html = `
+                <div class="mb-6 text-6xl animate-bounce">${data.icon}</div>
+                <div class="space-y-4">
+            `;
+            
+            data.content.forEach((text, i) => {
+                if (i === 0) {
+                    // 第一个词更大
+                    html += `
+                        <div class="character-pop text-6xl md:text-8xl font-black gold-text mb-6" 
+                             style="animation-delay: ${i * 0.2}s; text-shadow: 0 4px 12px rgba(255,215,0,0.3);">
+                            ${text}
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="character-pop text-3xl md:text-4xl font-bold text-yellow-200 tracking-widest" 
+                             style="animation-delay: ${i * 0.2}s">
+                            ${text}
+                        </div>
+                    `;
+                }
+            });
+            
+            html += '</div>';
+            content.innerHTML = html;
+            
+            // 显示祝福区域
+            display.classList.remove('hidden');
+            display.classList.add('blessing-enter');
+            
+            // 添加礼花效果
+            createFireworks();
+        }
+
+        // 重置视图
+        function resetView() {
+            const display = document.getElementById('blessing-display');
+            const options = document.getElementById('options-container');
+            
+            display.classList.add('hidden');
+            display.classList.remove('blessing-enter');
+            options.style.display = 'grid';
+        }
+
+        // 简单的礼花效果
+        function createFireworks() {
+            const colors = ['#FFD700', '#FFA500', '#FF6B6B', '#FFE55C'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const spark = document.createElement('div');
+                    spark.style.position = 'fixed';
+                    spark.style.left = '50%';
+                    spark.style.top = '50%';
+                    spark.style.width = '8px';
+                    spark.style.height = '8px';
+                    spark.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    spark.style.borderRadius = '50%';
+                    spark.style.pointerEvents = 'none';
+                    spark.style.zIndex = '100';
+                    
+                    const angle = (Math.PI * 2 * i) / 30;
+                    const velocity = 100 + Math.random() * 100;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity;
+                    
+                    spark.style.animation = `firework 1s ease-out forwards`;
+                    spark.style.setProperty('--tx', tx + 'px');
+                    spark.style.setProperty('--ty', ty + 'px');
+                    
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        // 添加礼花动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes firework {
+                0% {
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 初始化
+        window.onload = () => {
+            createSequins();
+        };
+
+        // 添加鼠标移动视差效果
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            const decorations = document.querySelectorAll('.floating, .floating-slow, .lantern-swing');
+            decorations.forEach((dec, index) => {
+                const speed = (index + 1) * 10;
+                dec.style.transform += ` translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
